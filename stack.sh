@@ -393,10 +393,6 @@ read_password ADMIN_PASSWORD "ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (
 # Log files
 # ---------
 
-
-# This is the begining of a huge sub-shell to generate the log file via tee
-(
-=======
 # Set up logging for stack.sh
 # Set LOGFILE="-" to turn off logging
 if [[ "$LOGFILE" = "-" ]]; then
