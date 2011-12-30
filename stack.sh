@@ -400,7 +400,7 @@ if [[ "$LOGFILE" = "-" ]]; then
     LOGFILE=""
 else
     # First clean up old log files
-    LOGFILE=${LOGFILE:-"$PWD/stack.sh.$$.log"}
+    LOGFILE=${LOGFILE:-"$PWD/stack.sh.`date +%F-%H%M%S`.log"}
     LOGDAYS=${LOGDAYS:-7}
     # TODO(dtroyer): need to handle user-specified logfile below in case
     #                it doesn't end in .log
