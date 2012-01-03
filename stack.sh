@@ -394,19 +394,19 @@ read_password ADMIN_PASSWORD "ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (
 # ---------
 
 # Set up logging for stack.sh
-# Set LOGFILE="-" to turn off logging
-if [[ "$LOGFILE" = "-" ]]; then
-    # No logging here, just use stdout/stderr
-    LOGFILE=""
-else
-    # First clean up old log files
-    LOGFILE=${LOGFILE:-"$PWD/stack.sh.`date +%F-%H%M%S`.log"}
+# Set LOGFILE to turn on logging
+# We append '.xxxxxxxx' to the given name to maintain history
+# where xxxxxxxx is a representation of the date the file was created
+if [[ -n "$LOGFILE" ]]; then
+    # First clean up old log files.  Use the user-specified LOGFILE
+    # as the template to search for, appending '.*' to match the date
+    # we added on earlier runs.
     LOGDAYS=${LOGDAYS:-7}
-    # TODO(dtroyer): need to handle user-specified logfile below in case
-    #                it doesn't end in .log
-    LOGDIR=`dirname $LOGFILE`
-    find $LOGDIR -name \*.log -mtime +$LOGDAYS -exec rm {} \;
+    LOGDIR=$(dirname $LOGFILE)
+    LOGNAME=$(basename $LOGFILE)
+    find $LOGDIR -name $LOGNAME.\* -mtime +$LOGDAYS -maxdepth 0 -exec rm {} \;
 
+    LOGFILE=$LOGFILE.`date +%F-%H%M%S`
     # Redirect stdout/stderr to tee to write the log file
     exec 1> >( tee "${LOGFILE}" ) 2>&1
 fi
